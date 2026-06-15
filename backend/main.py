@@ -7,12 +7,20 @@ from app.services.eye_contact import detect_faces
 from app.services.eye_contact import detect_eye_landmarks
 from app.services.confidence_score import calculate_confidence_score
 from app.services.feedback_generator import generate_feedback
+from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
 
 app = FastAPI(
     title="AI Interview Analyzer",
     version="1.0"
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 UPLOAD_DIR = "uploads"
