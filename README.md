@@ -57,7 +57,7 @@ An intelligent AI-powered interview assessment platform that analyzes interview 
 * React.js
 * Vite
 * Axios
-* CSS3
+* CSS3 (Custom Cyberpunk UI)
 
 ### Backend
 
