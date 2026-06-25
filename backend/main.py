@@ -20,8 +20,26 @@ from app.services.resume_interview_match import (
 from app.services.report_generator import (
     generate_report
 )
+from app.services.sentiment_analysis import analyze_sentiment
+from app.services.question_detector import detect_question_type
+from app.services.shap_explainer import (
+    explain_confidence
+)
+from app.database.database import SessionLocal
+from app.database.analysis_model import InterviewAnalysis
 import shutil
 import os
+from app.routes.auth_routes import router as auth_router
+from fastapi import Depends
+
+
+from app.security.dependencies import (
+    get_current_user
+)
+
+from app.database.user_model import User
+
+
 
 app = FastAPI(
     title="AI Interview Analyzer",
@@ -34,6 +52,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(auth_router)
 
 UPLOAD_DIR = "uploads"
 
@@ -67,7 +86,10 @@ async def transcribe(file: UploadFile = File(...)):
 
     return result
 @app.post("/analyze")
-async def analyze(file: UploadFile = File(...)):
+async def analyze(
+    file: UploadFile = File(...),
+    current_user = Depends(get_current_user)
+):
 
     file_path = os.path.join(UPLOAD_DIR, file.filename)
 
@@ -77,6 +99,9 @@ async def analyze(file: UploadFile = File(...)):
     result = transcribe_video(file_path)
 
     transcript = result["transcript"]
+    question_type = detect_question_type(transcript)
+    print("Question Type:", question_type)
+    sentiment_result = analyze_sentiment(transcript)
 
     segments = result["segments"]
 
@@ -93,11 +118,20 @@ async def analyze(file: UploadFile = File(...)):
     face_report = detect_eye_landmarks(
         file_path
     )
-
+    sentiment_report = analyze_sentiment(transcript)
+  
     confidence_score = calculate_confidence_score(
-        communication_score["score"],
-        face_report["eye_contact_percent"]
-    )
+    communication_score["score"],
+    face_report["eye_contact_percent"],
+    speech_report["wpm"],
+    filler_report["total_fillers"]
+)
+    confidence_explanation = explain_confidence(
+    face_report["eye_contact_percent"],
+    communication_score["score"],
+    speech_report["wpm"],
+    filler_report["total_fillers"]
+)
 
     feedback = generate_feedback(
     filler_report,
@@ -105,16 +139,54 @@ async def analyze(file: UploadFile = File(...)):
     confidence_score,
     face_report
 )
+    db = SessionLocal()
 
+    analysis = InterviewAnalysis(
+    user_id=current_user.id,
+    confidence_score=confidence_score["score"],
+    communication_score=communication_score["score"],
+    eye_contact=face_report["eye_contact_percent"],
+    speech_pace=speech_report["wpm"],
+    sentiment=sentiment_result["label"],
+    question_type=question_type,
+    transcript=transcript
+)
+
+    db.add(analysis)
+    db.commit()
+    db.close()
+        
     return {
-    "transcript": transcript,
-    "filler_analysis": filler_report,
-    "speech_analysis": speech_report,
-    "communication_score": communication_score,
-    "eye_contact": face_report,
-    "confidence_score": confidence_score,
-    "feedback": feedback
-}
+        "transcript": transcript,
+        "filler_analysis": filler_report,
+        "speech_analysis": speech_report,
+        "communication_score": communication_score,
+        "eye_contact": face_report,
+        "confidence_score": confidence_score,
+        "feedback": feedback,
+        "sentiment": sentiment_result,
+        "question_type": question_type,
+        "confidence_explanation": confidence_explanation,
+    }
+
+@app.get("/analyses")
+def get_analyses(
+    current_user = Depends(get_current_user)
+):
+
+    db = SessionLocal()
+
+    analyses = db.query(
+        InterviewAnalysis
+    ).filter(
+        InterviewAnalysis.user_id ==
+        current_user.id
+    ).all()
+
+    db.close()
+
+    return analyses
+
 @app.post("/analyze-resume")
 async def analyze_resume_endpoint(
     file: UploadFile = File(...)

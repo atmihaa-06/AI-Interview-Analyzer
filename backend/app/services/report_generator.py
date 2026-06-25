@@ -146,6 +146,8 @@ def generate_report(data):
         {}
     )
 
+    sentiment = interview.get("sentiment", {})
+
     scores = [
         (
             "Confidence",
@@ -182,10 +184,14 @@ def generate_report(data):
                     0
                 )
             )
-        )
+        ),
+        (
+    "Sentiment",
+    sentiment.get("label", "N/A").title()
+)
     ]
 
-    x = 40
+    x = 15
 
     for title, value in scores:
 
@@ -196,7 +202,7 @@ def generate_report(data):
         c.roundRect(
             x,
             card_y,
-            120,
+            100,
             70,
             10,
             fill=1
@@ -208,7 +214,7 @@ def generate_report(data):
 
         c.setFont(
             "Helvetica-Bold",
-            11
+            10
         )
 
         c.drawString(
@@ -223,7 +229,7 @@ def generate_report(data):
 
         c.setFont(
             "Helvetica-Bold",
-            22
+            16
         )
 
         c.drawString(
@@ -232,7 +238,7 @@ def generate_report(data):
             value
         )
 
-        x += 130
+        x += 108
 
     # -------------------------
     # GRADE

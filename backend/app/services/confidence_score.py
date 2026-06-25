@@ -1,13 +1,36 @@
+import joblib
+import os
+
+MODEL_PATH = os.path.join(
+    os.path.dirname(
+        os.path.dirname(
+            os.path.dirname(__file__)
+        )
+    ),
+    "confidence_model.pkl"
+)
+
+model = joblib.load(MODEL_PATH)
+
+
 def calculate_confidence_score(
     communication_score,
-    eye_contact_percent
+    eye_contact_percent,
+    speech_pace,
+    filler_count
 ):
 
+    prediction = model.predict([
+        [
+            eye_contact_percent,
+            communication_score,
+            speech_pace,
+            filler_count
+        ]
+    ])[0]
+
     score = round(
-        (
-            communication_score +
-            eye_contact_percent
-        ) / 2,
+        float(prediction),
         2
     )
 

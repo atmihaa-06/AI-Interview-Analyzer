@@ -14,6 +14,8 @@ class ReportRequest(BaseModel):
 
     match_score: float
 
+    sentiment: dict
+
     strengths: List[str]
 
     improvements: List[str]

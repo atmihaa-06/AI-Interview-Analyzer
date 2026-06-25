@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import AnalysisHistory from "./AnalysisHistory";
 
 function InterviewAnalyzer({
   setInterviewData
@@ -164,6 +165,13 @@ function InterviewAnalyzer({
               </div>
 
               <div className="metric-card">
+                <h3>Question Type</h3>
+                <h2>
+                  {result.question_type}
+                </h2>
+              </div>
+
+              <div className="metric-card">
                 <h3>Rating</h3>
                 <h2>
                   {result.confidence_score.rating}
@@ -187,6 +195,30 @@ function InterviewAnalyzer({
           </section>
 
           <section className="glass-panel">
+  <h2>Confidence Explanation (SHAP)</h2>
+
+  <p>
+    Eye Contact:
+    {result.confidence_explanation.eye_contact}
+  </p>
+
+  <p>
+    Communication:
+    {result.confidence_explanation.communication}
+  </p>
+
+  <p>
+    Speech Pace:
+    {result.confidence_explanation.speech_pace}
+  </p>
+
+  <p>
+    Fillers:
+    {result.confidence_explanation.fillers}
+  </p>
+</section>
+
+          <section className="glass-panel">
 
             <h2>
               Processed Transcript
@@ -201,7 +233,7 @@ function InterviewAnalyzer({
         </div>
 
       )}
-
+      <AnalysisHistory />
     </div>
 
   );

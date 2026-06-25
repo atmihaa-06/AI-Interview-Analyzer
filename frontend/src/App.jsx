@@ -4,12 +4,14 @@ import "./App.css";
 import InterviewAnalyzer from "./components/InterviewAnalyzer";
 import ResumeAnalyzer from "./components/ResumeAnalyzer";
 import ResumeMatchAnalyzer from "./components/ResumeMatchAnalyzer";
+import Login from "./pages/Login";
 function App() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("interview");
   const [interviewData, setInterviewData] = useState(null);
+  const token = localStorage.getItem("token");
 
 const [resumeData, setResumeData] =
 useState(null);
@@ -25,6 +27,9 @@ useState(null);
     elementRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
+  if (!token) {
+  return <Login />;
+}
   const analyzeInterview = async () => {
     if (!file) {
       alert("Please choose a video session file first.");
@@ -61,6 +66,20 @@ useState(null);
         <div className="nav-links">
           <button className="nav-text-link" onClick={() => scrollToSection(aboutRef)}>Metrics Matrix</button>
           <button className="nav-btn-link" onClick={() => scrollToSection(analyzerRef)}>Open Workspace</button>
+          <button
+  className="nav-btn-link"
+  onClick={() => {
+
+    localStorage.removeItem(
+      "token"
+    );
+
+    window.location.reload();
+
+  }}
+>
+  Logout
+</button>
         </div>
       </nav>
 
