@@ -1,64 +1,98 @@
 import { useState } from "react";
 import axios from "axios";
+import "../styles/Login.css";
+import { useNavigate }
+from "react-router-dom";
 
-function Login() {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Login({ onLogin }) {
 
-  const loginUser = async () => {
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
+
+const navigate = useNavigate();
+  const login = async () => {
 
     try {
 
-      const response = await axios.post(
-        "http://127.0.0.1:8000/login",
-        {
-          email,
-          password
-        }
-      );
+      const response =
+        await axios.post(
+          "http://127.0.0.1:8000/login",
+          {
+            email,
+            password
+          }
+        );
 
       localStorage.setItem(
-  "token",
-  response.data.access_token
-);
+        "token",
+        response.data.access_token
+      );
 
-window.location.reload();
+      onLogin();
 
-    } catch (error) {
+    } catch {
 
       alert("Invalid credentials");
 
     }
+
   };
 
   return (
-    <div className="auth-container">
 
-      <h1>Login</h1>
+    <div className="login-page">
 
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) =>
-          setEmail(e.target.value)
-        }
-      />
+      <div className="login-card">
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setPassword(e.target.value)
-        }
-      />
+        <h1>Intellect.AI</h1>
 
-      <button onClick={loginUser}>
-        Login
-      </button>
+        <p>
+          AI-Powered Interview Analyzer
+        </p>
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e)=>
+            setEmail(e.target.value)
+          }
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e)=>
+            setPassword(
+              e.target.value
+            )
+          }
+        />
+
+        <button
+  className="login-btn"
+  onClick={login}
+>
+  Login
+</button>
+
+<button
+  className="register-btn"
+  onClick={() => navigate("/register")}
+>
+  Create Account
+</button>
+      </div>
 
     </div>
+
   );
+
 }
 
 export default Login;

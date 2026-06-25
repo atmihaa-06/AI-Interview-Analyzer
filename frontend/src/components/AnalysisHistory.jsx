@@ -6,11 +6,30 @@ function AnalysisHistory() {
 
   useEffect(() => {
 
-    fetch("http://127.0.0.1:8000/analyses")
-      .then((res) => res.json())
-      .then((data) => setAnalyses(data));
+  const token =
+    localStorage.getItem("token");
 
-  }, []);
+  fetch(
+    "http://127.0.0.1:8000/analyses",
+    {
+      headers: {
+        Authorization:
+          `Bearer ${token}`
+      }
+    }
+  )
+    .then((res) => res.json())
+    .then((data) => {
+
+      if (Array.isArray(data)) {
+        setAnalyses(data);
+      } else {
+        setAnalyses([]);
+      }
+
+    });
+
+}, []);
 
   return (
     <div className="glass-panel">

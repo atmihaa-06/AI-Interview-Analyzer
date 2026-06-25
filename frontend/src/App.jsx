@@ -5,6 +5,14 @@ import InterviewAnalyzer from "./components/InterviewAnalyzer";
 import ResumeAnalyzer from "./components/ResumeAnalyzer";
 import ResumeMatchAnalyzer from "./components/ResumeMatchAnalyzer";
 import Login from "./pages/Login";
+import {
+  Routes,
+  Route
+} from "react-router-dom";
+
+import Register from "./pages/Register";
+
+
 function App() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -12,6 +20,10 @@ function App() {
   const [activeTab, setActiveTab] = useState("interview");
   const [interviewData, setInterviewData] = useState(null);
   const token = localStorage.getItem("token");
+  const [isLoggedIn, setIsLoggedIn] =
+  useState(
+    !!localStorage.getItem("token")
+  );
 
 const [resumeData, setResumeData] =
 useState(null);
@@ -27,8 +39,30 @@ useState(null);
     elementRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  if (!token) {
-  return <Login />;
+  if (!isLoggedIn) {
+
+  return (
+    <Routes>
+
+      <Route
+        path="/"
+        element={
+          <Login
+            onLogin={() =>
+              setIsLoggedIn(true)
+            }
+          />
+        }
+      />
+
+      <Route
+        path="/register"
+        element={<Register />}
+      />
+
+    </Routes>
+  );
+
 }
   const analyzeInterview = async () => {
     if (!file) {

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "../styles/Register.css";
 
 function Register() {
+
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -22,46 +26,82 @@ function Register() {
 
       alert("Registration successful");
 
+      navigate("/");
+
     } catch {
 
       alert("Registration failed");
 
     }
+
   };
 
   return (
-    <div className="auth-container">
 
-      <h1>Register</h1>
+    <div className="register-page">
 
-      <input
-        placeholder="Username"
-        onChange={(e) =>
-          setUsername(e.target.value)
-        }
-      />
+      <div className="register-card">
 
-      <input
-        placeholder="Email"
-        onChange={(e) =>
-          setEmail(e.target.value)
-        }
-      />
+        <h1 className="register-logo">
+          Intellect<span>.AI</span>
+        </h1>
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setPassword(e.target.value)
-        }
-      />
+        <p className="register-subtitle">
+          Create Your Account
+        </p>
 
-      <button onClick={registerUser}>
-        Register
-      </button>
+        <input
+          className="register-input"
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) =>
+            setUsername(e.target.value)
+          }
+        />
+
+        <input
+          className="register-input"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) =>
+            setEmail(e.target.value)
+          }
+        />
+
+        <input
+          className="register-input"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) =>
+            setPassword(e.target.value)
+          }
+        />
+
+        <button
+          className="register-btn"
+          onClick={registerUser}
+        >
+          Create Account
+        </button>
+
+        <button
+          className="back-btn"
+          onClick={() =>
+            navigate("/")
+          }
+        >
+          Back To Login
+        </button>
+
+      </div>
 
     </div>
+
   );
+
 }
 
 export default Register;
