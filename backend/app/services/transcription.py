@@ -1,8 +1,8 @@
 import whisper
 
-model = whisper.load_model("base")
-
 def transcribe_video(video_path):
+    model = whisper.load_model("tiny")   # Load only when needed
+
     result = model.transcribe(video_path)
 
     return {
