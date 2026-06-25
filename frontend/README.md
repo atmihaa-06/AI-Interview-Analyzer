@@ -1,16 +1,181 @@
-# React + Vite
+# AI Interview Analyzer - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+The AI Interview Analyzer Frontend is a React-based web application that provides an interactive platform for analyzing interview performance, evaluating resumes, and generating detailed assessment reports.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+The application integrates with a FastAPI backend and leverages Artificial Intelligence, Computer Vision, and Explainable AI techniques to provide candidates with actionable interview feedback.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+### Authentication & Security
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* User Registration and Login
+* JWT-based Authentication
+* Protected User Sessions
+* Secure API Communication
+
+### Interview Analysis
+
+* Upload interview video recordings
+* Speech-to-Text transcription integration
+* Confidence Score Visualization
+* Communication Score Analysis
+* Eye Contact Tracking Results
+* Speech Pace Evaluation
+* Sentiment Analysis Results
+* Question Type Classification
+* Personalized AI Feedback
+
+### Resume Analysis
+
+* Upload resume documents
+* Resume quality assessment
+* Skills extraction
+* Strength and weakness identification
+* Resume improvement suggestions
+
+### Resume Match Analysis
+
+* Compare resume against job descriptions
+* Match percentage calculation
+* Skill gap identification
+* Candidate-job compatibility insights
+
+### Report Generation
+
+* Generate comprehensive interview reports
+* Download PDF reports
+* Consolidated performance analytics
+
+---
+
+## Tech Stack
+
+### Frontend
+
+* React.js
+* JavaScript (ES6+)
+* HTML5
+* CSS3
+
+### Libraries
+
+* Axios
+* React Hooks
+* Fetch API
+
+### Authentication
+
+* JWT (JSON Web Token)
+
+### Backend Integration
+
+* FastAPI REST APIs
+* JSON-based communication
+
+---
+
+## Application Modules
+
+### Login & Registration
+
+Handles user authentication and secure access to platform features.
+
+### Interview Analyzer
+
+Allows users to upload interview recordings and receive AI-generated performance insights.
+
+### Resume Analyzer
+
+Evaluates uploaded resumes and provides structured recommendations.
+
+### Resume Match Analyzer
+
+Measures alignment between candidate resumes and job requirements.
+
+### Report Generator
+
+Combines interview, resume, and matching insights into a downloadable PDF report.
+
+---
+
+## Project Structure
+
+```text
+src/
+│
+├── components/
+│   ├── InterviewAnalyzer.jsx
+│   ├── ResumeAnalyzer.jsx
+│   ├── ResumeMatchAnalyzer.jsx
+│
+├── App.jsx
+├── App.css
+├── main.jsx
+│
+└── assets/
+```
+
+---
+
+## Installation
+
+### Clone Repository
+
+```bash
+git clone <repository-url>
+cd frontend
+```
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Start Development Server
+
+```bash
+npm run dev
+```
+
+Frontend will be available at:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## Backend Requirement
+
+Ensure the FastAPI backend is running before starting the frontend.
+
+Default Backend URL:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+## Future Enhancements
+
+* Dashboard Analytics
+* Historical Interview Tracking
+* Multi-user Profile Management
+* Interview Performance Trends
+* AI-Powered Interview Recommendations
+* Cloud Deployment Support
+
+---
+
+## Author
+
+Atmihaa MB
+
+Computer Science and Engineering
+VIT Chennai
