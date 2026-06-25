@@ -1,13 +1,12 @@
 from transformers import pipeline
-import torch
-
-classifier = pipeline(
-    "sentiment-analysis",
-    model="distilbert-base-uncased-finetuned-sst-2-english",
-    framework="pt"
-)
 
 def analyze_sentiment(text):
+
+    classifier = pipeline(
+        "sentiment-analysis",
+        model="distilbert-base-uncased-finetuned-sst-2-english",
+        framework="pt"
+    )
 
     result = classifier(text[:512])
 
